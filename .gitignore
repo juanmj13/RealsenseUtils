@@ -6,6 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+# Testing and obtained files, don't track
+*.bag
+*.pt
+*.mp4
+*.avi
+*.gif
+outputs/
+
+
 # Distribution / packaging
 .Python
 build/
