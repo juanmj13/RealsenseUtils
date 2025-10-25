@@ -11,7 +11,7 @@ A set of **Python utilities** for working with **Intel RealSense \*.bag** files,
 - **YOLO detection viewer** for `.bag` files with live display and optional **MP4 recording**.  
 - Adjustable **sampling** (`--every-n`), **frame limits** (`--max-frames`), and **timeout** per read.  
 
-## 🧰 Requirements
+## Requirements
 
 ### Common
 ```bash
@@ -33,6 +33,7 @@ pip install ultralytics
 ## Scripts and Usage
 
 ### 1) `extract_rs_frames.py` — extract color and depth frames
+This function is really usefull for extracting color and depth frames from an Intel RealSense .bag file to prepare for training datasets.
 
 **Description**
 - Color → 8-bit PNG (BGR as delivered by OpenCV).
@@ -67,7 +68,8 @@ python extract_rs_frames.py VIDEO.bag \
 
 ---
 
-### 2) `bag_to_video.py` — `.bag` → **MP4** or **GIF**
+### 2) `convert_bag.py` — `.bag` → **MP4** or **GIF**
+Convert a realsense .bag file to MP4 or GIF using color frames.
 
 **Description**
 - Reads **only** the **color stream** from the `.bag`.
@@ -80,7 +82,7 @@ python extract_rs_frames.py VIDEO.bag \
 
 ```bash
 # MP4 (30 fps, sampling every 3rd frame)
-python bag_to_video.py \
+python convert_bag.py \
   --video VIDEO.bag \
   --output color \
   --ext mp4 \
@@ -90,7 +92,7 @@ python bag_to_video.py \
   --timeout-ms 5000
 
 # GIF (10 fps)
-python bag_to_video.py \
+python convert_bag.py \
   --video VIDEO.bag \
   --output color \
   --ext gif \
@@ -112,6 +114,7 @@ python bag_to_video.py \
 ---
 
 ### 3) `rs_yolo_detect.py` — YOLO viewer and MP4 recorder
+YOLO detection viewer for Intel RealSense .bag files.
 
 **Description**
 - Loads a **YOLO (Ultralytics)** model and processes the **color stream** from a `.bag`.
@@ -148,7 +151,7 @@ python rs_yolo_detect.py \
 
 ---
 
-## 🔎 Notes and Best Practices
+## Notes and Best Practices
 
 - **Color BGR/RGB**: RealSense color is typically **RGB8**, while OpenCV uses **BGR**. The scripts handle conversion automatically.  
 - **Depth alignment**: Aligning depth to color is useful for dataset generation — disable with `--no-align` if not needed.  
@@ -159,14 +162,14 @@ python rs_yolo_detect.py \
 
 ---
 
-## 🧪 Quick Examples
+## Quick Examples
 
 ```bash
 # 1) Extract frames every 10 steps (max 300), depth range 0.2–2.0 m
 python extract_rs_frames.py my_scene.bag --every-n 10 --max-frames 300 --min-m 0.2 --max-m 2.0
 
 # 2) Create a timelapse MP4 at 60 fps using 1/5 frames
-python bag_to_video.py --video my_scene.bag --output color --ext mp4 --fps 60 --every-n 5
+python convert_bag.py --video my_scene.bag --output color --ext mp4 --fps 60 --every-n 5
 
 # 3) Run YOLO detection and record results to 1080p MP4
 python rs_yolo_detect.py --model yolov8n.pt --bag my_scene.bag --resolution 1920x1080 --record detections.mp4
@@ -174,7 +177,7 @@ python rs_yolo_detect.py --model yolov8n.pt --bag my_scene.bag --resolution 1920
 
 ---
 
-## 🧯 Troubleshooting
+## Troubleshooting
 
 - **“Color frames not written” / No color output** → Ensure the `.bag` includes a **color stream**.  
 - **`ImportError: pyrealsense2`** → Install the correct wheel for your Python/OS.  
@@ -190,3 +193,9 @@ python rs_yolo_detect.py --model yolov8n.pt --bag my_scene.bag --resolution 1920
 
 # Author
 - Juan Manuel Jiménez
+
+# Credits
+Part of the YOLO detection script (`realsense_yolo_detect.py`) was inspired by work from  
+**[Edje Electronics – Train and Deploy YOLO Models](https://github.com/EdjeElectronics/Train-and-Deploy-YOLO-Models)**.  
+
+Special thanks to Edje Electronics for providing an excellent open-source reference for integrating **Ultralytics YOLO** models in practical Python workflows.
